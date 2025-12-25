@@ -1,0 +1,819 @@
+{
+    "doc_info": {
+        "doc_name": "Web-Based To-Do List Application \u2013 Requirements Document",
+        "doc_type": "application/pdf",
+        "doc_version": "1.7.0"
+    },
+    "doc_content": [
+        {
+            "text": "Web-Based To-Do List Application Requirements Document",
+            "metadata": {
+                "page_number": 1,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "Web-Based To-Do List Application Requirements Document",
+                "level": 1
+            }
+        },
+        {
+            "text": "1. Overview",
+            "metadata": {
+                "page_number": 1,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "1. Overview",
+                "level": 1
+            }
+        },
+        {
+            "text": "1.1 Purpose",
+            "metadata": {
+                "page_number": 1,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "1.1 Purpose",
+                "level": 1
+            }
+        },
+        {
+            "text": "This document outlines the requirements for a web-based To-Do List Application that enables users to efficiently manage and organize their daily tasks from any browser. The goal is to provide a simple, responsive, and user-friendly interface for personal productivity.",
+            "metadata": {
+                "page_number": 1,
+                "content_label": "TEXT",
+                "orig_text": "This document outlines the requirements for a web-based To-Do List Application that enables users to efficiently manage and organize their daily tasks from any browser. The goal is to provide a simple, responsive, and user-friendly interface for personal productivity.",
+                "level": null
+            }
+        },
+        {
+            "text": "1.2 Scope",
+            "metadata": {
+                "page_number": 1,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "1.2 Scope",
+                "level": 1
+            }
+        },
+        {
+            "text": "The application will:",
+            "metadata": {
+                "page_number": 1,
+                "content_label": "TEXT",
+                "orig_text": "The application will:",
+                "level": null
+            }
+        },
+        {
+            "text": "Allow users to create, update, organize, and delete tasks via a browser",
+            "metadata": {
+                "page_number": 1,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf Allow users to create, update, organize, and delete tasks via a browser",
+                "level": null
+            }
+        },
+        {
+            "text": "Include essential features like due dates, task categories, reminders, and priorities",
+            "metadata": {
+                "page_number": 1,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf Include essential features like due dates, task categories, reminders, and priorities",
+                "level": null
+            }
+        },
+        {
+            "text": "Be responsive and accessible from both desktop and mobile browsers",
+            "metadata": {
+                "page_number": 1,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf Be responsive and accessible from both desktop and mobile browsers",
+                "level": null
+            }
+        },
+        {
+            "text": "Persist data in a secure backend with account-based access",
+            "metadata": {
+                "page_number": 1,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf Persist data in a secure backend with account-based access",
+                "level": null
+            }
+        },
+        {
+            "text": "1.3 Intended Audience",
+            "metadata": {
+                "page_number": 1,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "1.3 Intended Audience",
+                "level": 1
+            }
+        },
+        {
+            "text": "Product Managers",
+            "metadata": {
+                "page_number": 1,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf Product Managers",
+                "level": null
+            }
+        },
+        {
+            "text": "Software Developers",
+            "metadata": {
+                "page_number": 1,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf Software Developers",
+                "level": null
+            }
+        },
+        {
+            "text": "UI/UX Designers",
+            "metadata": {
+                "page_number": 1,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf UI/UX Designers",
+                "level": null
+            }
+        },
+        {
+            "text": "QA Engineers",
+            "metadata": {
+                "page_number": 1,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf QA Engineers",
+                "level": null
+            }
+        },
+        {
+            "text": "Project Stakeholders",
+            "metadata": {
+                "page_number": 1,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf Project Stakeholders",
+                "level": null
+            }
+        },
+        {
+            "text": "2. Functional Capabilities of the Services:",
+            "metadata": {
+                "page_number": 2,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "2. Functional Capabilities of the Services:",
+                "level": 1
+            }
+        },
+        {
+            "text": "2.1 Authorization Service:",
+            "metadata": {
+                "page_number": 2,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "2.1 Authorization Service:",
+                "level": 1
+            }
+        },
+        {
+            "text": "2.1.1 POST /register:",
+            "metadata": {
+                "page_number": 2,
+                "content_label": "LIST_ITEM",
+                "orig_text": "2.1.1 POST /register:",
+                "level": null
+            }
+        },
+        {
+            "text": "User registers with email and password.",
+            "metadata": {
+                "page_number": 2,
+                "content_label": "TEXT",
+                "orig_text": "User registers with email and password.",
+                "level": null
+            }
+        },
+        {
+            "text": "2.1.2 POST /login: User login with correct email and password",
+            "metadata": {
+                "page_number": 2,
+                "content_label": "LIST_ITEM",
+                "orig_text": "2.1.2 POST /login: User login with correct email and password",
+                "level": null
+            }
+        },
+        {
+            "text": "2.1.3 POST /logout :  User should be able to logout.",
+            "metadata": {
+                "page_number": 2,
+                "content_label": "LIST_ITEM",
+                "orig_text": "2.1.3 POST /logout :  User should be able to logout.",
+                "level": null
+            }
+        },
+        {
+            "text": "2.1.4 POST /reset: Use should be able to recover the password.",
+            "metadata": {
+                "page_number": 2,
+                "content_label": "LIST_ITEM",
+                "orig_text": "2.1.4 POST /reset: Use should be able to recover the password.",
+                "level": null
+            }
+        },
+        {
+            "text": "2.2 REST API Endpoints:",
+            "metadata": {
+                "page_number": 2,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "2.2 REST API Endpoints:",
+                "level": 1
+            }
+        },
+        {
+            "text": "2.2.1 GET /todos : Retrieves all tasks for the logged-in user. Supports filtering by completion status, Name, and sorting capabilities to help users organize and find their tasks quickly.",
+            "metadata": {
+                "page_number": 2,
+                "content_label": "TEXT",
+                "orig_text": "2.2.1 GET /todos : Retrieves all tasks for the logged-in user. Supports filtering by completion status, Name, and sorting capabilities to help users organize and find their tasks quickly.",
+                "level": null
+            }
+        },
+        {
+            "text": "2.2.2 POST /todos: Creates a new task with name, description and completion status. Automatically triggers JIRA ticket creation and sends an email notification to the user with the JIRA ticket link.",
+            "metadata": {
+                "page_number": 2,
+                "content_label": "TEXT",
+                "orig_text": "2.2.2 POST /todos: Creates a new task with name, description and completion status. Automatically triggers JIRA ticket creation and sends an email notification to the user with the JIRA ticket link.",
+                "level": null
+            }
+        },
+        {
+            "text": "2.2.3 GET /todos/{id}: Fetches details of a specific task by its ID, including all task properties, subtasks, and metadata.",
+            "metadata": {
+                "page_number": 2,
+                "content_label": "TEXT",
+                "orig_text": "2.2.3 GET /todos/{id}: Fetches details of a specific task by its ID, including all task properties, subtasks, and metadata.",
+                "level": null
+            }
+        },
+        {
+            "text": "2.2.4  PUT /todos/{id}: Updates an existing task's properties such as name and  completion status",
+            "metadata": {
+                "page_number": 2,
+                "content_label": "LIST_ITEM",
+                "orig_text": "2.2.4  PUT /todos/{id}: Updates an existing task's properties such as name and  completion status",
+                "level": null
+            }
+        },
+        {
+            "text": "2.2.5 DELETE /todos/{id}: Permanently deletes a task from the user's account for the given id.",
+            "metadata": {
+                "page_number": 2,
+                "content_label": "LIST_ITEM",
+                "orig_text": "2.2.5 DELETE /todos/{id}: Permanently deletes a task from the user's account for the given id.",
+                "level": null
+            }
+        },
+        {
+            "text": "2.3 Event Processing Consumers:",
+            "metadata": {
+                "page_number": 2,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "2.3 Event Processing Consumers:",
+                "level": 1
+            }
+        },
+        {
+            "text": "2.3.1 CONSUME on todo-items-audit: Processes and persists audit logs for all TODO-related operations, ensuring compliance tracking and maintaining a complete audit trail.",
+            "metadata": {
+                "page_number": 2,
+                "content_label": "TEXT",
+                "orig_text": "2.3.1 CONSUME on todo-items-audit: Processes and persists audit logs for all TODO-related operations, ensuring compliance tracking and maintaining a complete audit trail.",
+                "level": null
+            }
+        },
+        {
+            "text": "2.3.2 CONSUME on todo-items-email \u2192 PRODUCE on todo-items-audit: Handles email notifications for new tasks. Sends emails to task creators containing direct links to associated JIRA tickets, then logs these notification events for auditing.",
+            "metadata": {
+                "page_number": 2,
+                "content_label": "TEXT",
+                "orig_text": "2.3.2 CONSUME on todo-items-email \u2192 PRODUCE on todo-items-audit: Handles email notifications for new tasks. Sends emails to task creators containing direct links to associated JIRA tickets, then logs these notification events for auditing.",
+                "level": null
+            }
+        },
+        {
+            "text": "2.3.3 CONSUME on todo-items-jira \u2192 PRODUCE on todo-items-audit, todo-items-email:",
+            "metadata": {
+                "page_number": 2,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "2.3.3 CONSUME on todo-items-jira \u2192 PRODUCE on todo-items-audit, todo-items-email:",
+                "level": 1
+            }
+        },
+        {
+            "text": "Manages JIRA integration for new tasks. Creates corresponding JIRA tickets automatically, triggers email notifications with ticket links, and generates audit records for all JIRA operations.",
+            "metadata": {
+                "page_number": 2,
+                "content_label": "TEXT",
+                "orig_text": "Manages JIRA integration for new tasks. Creates corresponding JIRA tickets automatically, triggers email notifications with ticket links, and generates audit records for all JIRA operations.",
+                "level": null
+            }
+        },
+        {
+            "text": "3. Functional Requirements",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "3. Functional Requirements",
+                "level": 1
+            }
+        },
+        {
+            "text": "2.1 User Accounts",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "2.1 User Accounts",
+                "level": 1
+            }
+        },
+        {
+            "text": "FR1.1 : Users can register using an email and password.",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf FR1.1 : Users can register using an email and password.",
+                "level": null
+            }
+        },
+        {
+            "text": "FR1.2 : Users can log in and log out securely.",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf FR1.2 : Users can log in and log out securely.",
+                "level": null
+            }
+        },
+        {
+            "text": "FR1.3 : Password recovery/reset functionality must be available.",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf FR1.3 : Password recovery/reset functionality must be available.",
+                "level": null
+            }
+        },
+        {
+            "text": "2.2 Task Management",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "2.2 Task Management",
+                "level": 1
+            }
+        },
+        {
+            "text": "FR2.1 : Users can create tasks with a name (required) and optional description.",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf FR2.1 : Users can create tasks with a name (required) and optional description.",
+                "level": null
+            }
+        },
+        {
+            "text": "\u2192 The task name must be between 5 and 250 characters.",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u2192 The task name must be between 5 and 250 characters.",
+                "level": null
+            }
+        },
+        {
+            "text": "FR2.2 : Users can set due dates and times for tasks.",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf FR2.2 : Users can set due dates and times for tasks.",
+                "level": null
+            }
+        },
+        {
+            "text": "FR2.3 : Users can mark tasks as complete or incomplete.",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf FR2.3 : Users can mark tasks as complete or incomplete.",
+                "level": null
+            }
+        },
+        {
+            "text": "FR2.4 : Users can delete or edit existing tasks.",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf FR2.4 : Users can delete or edit existing tasks.",
+                "level": null
+            }
+        },
+        {
+            "text": "FR2.5 : Users can assign priority levels (e.g., Low, Medium, High).",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf FR2.5 : Users can assign priority levels (e.g., Low, Medium, High).",
+                "level": null
+            }
+        },
+        {
+            "text": "FR2.6 : Users can create subtasks under main tasks.",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf FR2.6 : Users can create subtasks under main tasks.",
+                "level": null
+            }
+        },
+        {
+            "text": "2.3 Task Organization",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "2.3 Task Organization",
+                "level": 1
+            }
+        },
+        {
+            "text": "FR3.1 : Users can create multiple task lists (e.g., \"Work\", \"Personal\").",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf FR3.1 : Users can create multiple task lists (e.g., \"Work\", \"Personal\").",
+                "level": null
+            }
+        },
+        {
+            "text": "FR3.2 : Users can categorize or tag tasks.",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf FR3.2 : Users can categorize or tag tasks.",
+                "level": null
+            }
+        },
+        {
+            "text": "FR3.3 : Users can filter tasks by category, due date, completion status, or priority.",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf FR3.3 : Users can filter tasks by category, due date, completion status, or priority.",
+                "level": null
+            }
+        },
+        {
+            "text": "FR3.4 : Users can sort tasks (e.g., by due date, creation date, or priority).",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf FR3.4 : Users can sort tasks (e.g., by due date, creation date, or priority).",
+                "level": null
+            }
+        },
+        {
+            "text": "2.4 Notifications",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "2.4 Notifications",
+                "level": 1
+            }
+        },
+        {
+            "text": "FR4.1 : Users can set optional email reminders for tasks.",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf FR4.1 : Users can set optional email reminders for tasks.",
+                "level": null
+            }
+        },
+        {
+            "text": "FR4.2 : Reminders are triggered before task due time (customizable by user).",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf FR4.2 : Reminders are triggered before task due time (customizable by user).",
+                "level": null
+            }
+        },
+        {
+            "text": "2.5 Search",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "2.5 Search",
+                "level": 1
+            }
+        },
+        {
+            "text": "FR5.1 : Users can search for tasks by name or keywords.",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf FR5.1 : Users can search for tasks by name or keywords.",
+                "level": null
+            }
+        },
+        {
+            "text": "2.6 Data Persistence",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "2.6 Data Persistence",
+                "level": 1
+            }
+        },
+        {
+            "text": "FR6.1 : User data is stored in a backend database.",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf FR6.1 : User data is stored in a backend database.",
+                "level": null
+            }
+        },
+        {
+            "text": "FR6.2 : Data is tied to individual user accounts and securely retrieved upon login.",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf FR6.2 : Data is tied to individual user accounts and securely retrieved upon login.",
+                "level": null
+            }
+        },
+        {
+            "text": "Here are the enhanced requirements, incorporating JIRA ticket creation, email notifications for new TODO list items with JIRA links, and auditing:",
+            "metadata": {
+                "page_number": 3,
+                "content_label": "TEXT",
+                "orig_text": "Here are the enhanced requirements, incorporating JIRA ticket creation, email notifications for new TODO list items with JIRA links, and auditing:",
+                "level": null
+            }
+        },
+        {
+            "text": "2.7 Integration with JIRA & Notifications",
+            "metadata": {
+                "page_number": 4,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "2.7 Integration with JIRA & Notifications",
+                "level": 1
+            }
+        },
+        {
+            "text": "FR7.1 : Upon creation of a new TODO list item, a corresponding JIRA ticket must be automatically created.",
+            "metadata": {
+                "page_number": 4,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf FR7.1 : Upon creation of a new TODO list item, a corresponding JIRA ticket must be automatically created.",
+                "level": null
+            }
+        },
+        {
+            "text": "FR7.2 : An email notification must be sent to the task creator upon successful JIRA ticket creation for a new TODO item.",
+            "metadata": {
+                "page_number": 4,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf FR7.2 : An email notification must be sent to the task creator upon successful JIRA ticket creation for a new TODO item.",
+                "level": null
+            }
+        },
+        {
+            "text": "FR7.3 : The email notification must include a direct link to the newly created JIRA ticket.",
+            "metadata": {
+                "page_number": 4,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf FR7.3 : The email notification must include a direct link to the newly created JIRA ticket.",
+                "level": null
+            }
+        },
+        {
+            "text": "FR7.4 : All requests for new TODO list items and their corresponding email notifications must be audited for tracking and compliance purposes.",
+            "metadata": {
+                "page_number": 4,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf FR7.4 : All requests for new TODO list items and their corresponding email notifications must be audited for tracking and compliance purposes.",
+                "level": null
+            }
+        },
+        {
+            "text": "3. Non-Functional Requirements",
+            "metadata": {
+                "page_number": 4,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "3. Non-Functional Requirements",
+                "level": 1
+            }
+        },
+        {
+            "text": "3.1 Usability",
+            "metadata": {
+                "page_number": 4,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "3.1 Usability",
+                "level": 1
+            }
+        },
+        {
+            "text": "The application must have a clean, responsive UI compatible with all major browsers (Chrome, Firefox, Safari, Edge).",
+            "metadata": {
+                "page_number": 4,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf The application must have a clean, responsive UI compatible with all major browsers (Chrome, Firefox, Safari, Edge).",
+                "level": null
+            }
+        },
+        {
+            "text": "It should follow accessibility best practices (WCAG AA compliance preferred).",
+            "metadata": {
+                "page_number": 4,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf It should follow accessibility best practices (WCAG AA compliance preferred).",
+                "level": null
+            }
+        },
+        {
+            "text": "3.2 Performance",
+            "metadata": {
+                "page_number": 4,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "3.2 Performance",
+                "level": 1
+            }
+        },
+        {
+            "text": "Web pages should load within 2 seconds on average connections.",
+            "metadata": {
+                "page_number": 4,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf Web pages should load within 2 seconds on average connections.",
+                "level": null
+            }
+        },
+        {
+            "text": "All interactions (add/edit/delete tasks) must respond in under 300ms.",
+            "metadata": {
+                "page_number": 4,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf All interactions (add/edit/delete tasks) must respond in under 300ms.",
+                "level": null
+            }
+        },
+        {
+            "text": "3.3 Security",
+            "metadata": {
+                "page_number": 4,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "3.3 Security",
+                "level": 1
+            }
+        },
+        {
+            "text": "Use HTTPS for all traffic.",
+            "metadata": {
+                "page_number": 4,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf Use HTTPS for all traffic.",
+                "level": null
+            }
+        },
+        {
+            "text": "Store passwords using salted hashing (e.g., bcrypt).",
+            "metadata": {
+                "page_number": 4,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf Store passwords using salted hashing (e.g., bcrypt).",
+                "level": null
+            }
+        },
+        {
+            "text": "Authenticate users using secure tokens (e.g., JWT).",
+            "metadata": {
+                "page_number": 4,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf Authenticate users using secure tokens (e.g., JWT).",
+                "level": null
+            }
+        },
+        {
+            "text": "3.4 Availability",
+            "metadata": {
+                "page_number": 4,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "3.4 Availability",
+                "level": 1
+            }
+        },
+        {
+            "text": "The system should be available 99.5% of the time, excluding planned maintenance.",
+            "metadata": {
+                "page_number": 4,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf The system should be available 99.5% of the time, excluding planned maintenance.",
+                "level": null
+            }
+        },
+        {
+            "text": "3.5 Scalability",
+            "metadata": {
+                "page_number": 4,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "3.5 Scalability",
+                "level": 1
+            }
+        },
+        {
+            "text": "The backend must support scaling to at least 10,000 concurrent users.",
+            "metadata": {
+                "page_number": 4,
+                "content_label": "LIST_ITEM",
+                "orig_text": "\u25cf The backend must support scaling to at least 10,000 concurrent users.",
+                "level": null
+            }
+        },
+        {
+            "text": "4. User Stories",
+            "metadata": {
+                "page_number": 4,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "4. User Stories",
+                "level": 1
+            }
+        },
+        {
+            "text": "ID",
+            "metadata": {
+                "page_number": 5,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "ID",
+                "level": 1
+            }
+        },
+        {
+            "text": "User Story",
+            "metadata": {
+                "page_number": 5,
+                "content_label": "SECTION_HEADER",
+                "orig_text": "User Story",
+                "level": 1
+            }
+        },
+        {
+            "text": "US1 As a user, I want to register and log in so that I can manage my tasks securely.",
+            "metadata": {
+                "page_number": 5,
+                "content_label": "LIST_ITEM",
+                "orig_text": "US1 As a user, I want to register and log in so that I can manage my tasks securely.",
+                "level": null
+            }
+        },
+        {
+            "text": "US2 As a user, I want to create and edit tasks so that I can track my work.",
+            "metadata": {
+                "page_number": 5,
+                "content_label": "TEXT",
+                "orig_text": "US2 As a user, I want to create and edit tasks so that I can track my work.",
+                "level": null
+            }
+        },
+        {
+            "text": "US3 As a user, I want to set reminders so that I don't miss important deadlines.",
+            "metadata": {
+                "page_number": 5,
+                "content_label": "TEXT",
+                "orig_text": "US3 As a user, I want to set reminders so that I don't miss important deadlines.",
+                "level": null
+            }
+        },
+        {
+            "text": "US4 As a user, I want to filter and sort my tasks to quickly find what I need.",
+            "metadata": {
+                "page_number": 5,
+                "content_label": "LIST_ITEM",
+                "orig_text": "US4 As a user, I want to filter and sort my tasks to quickly find what I need.",
+                "level": null
+            }
+        },
+        {
+            "text": "US5 As a user, I want to search tasks by keyword to locate specific items quickly.",
+            "metadata": {
+                "page_number": 5,
+                "content_label": "LIST_ITEM",
+                "orig_text": "US5 As a user, I want to search tasks by keyword to locate specific items quickly.",
+                "level": null
+            }
+        },
+        {
+            "text": "US6 As a user, I want my data to sync when I reload the browser or log in from another device.",
+            "metadata": {
+                "page_number": 5,
+                "content_label": "LIST_ITEM",
+                "orig_text": "US6 As a user, I want my data to sync when I reload the browser or log in from another device.",
+                "level": null
+            }
+        }
+    ]
+}

@@ -1,0 +1,64 @@
+4. Important Classes & Methods (1-liner only)
+    Ingestion
+
+    DocumentLoader.load_doc(file_path) → str → Load raw text from file.
+
+    TypeDetector.detect_type(text) → str → Identify doc type.
+
+    ContractParser.split_clauses(text) → List[Clause] → Extract clauses.
+
+    PlaybookParser.extract_rules(text) → List[Rule] → Extract rules/fallbacks.
+
+    CaseParser.extract_summary(text) → Dict → Extract facts/holdings.
+
+    MetadataExtractor.add_metadata(doc, metadata) → Dict → Attach lineage/jurisdiction.
+
+    Indexing
+
+    VectorStore.add(docs) → Store embeddings in Chroma.
+
+    KeywordStore.index(docs) → Index docs in Elasticsearch.
+
+    Reranker.rank(query, results) → List → Rank retrieved docs.
+
+    Retrieval
+
+    HybridRetriever.search(query, top_k) → List[Docs] → Dense + BM25 retrieval.
+
+    QueryBuilder.build(user_input) → str → Normalize query.
+
+    Agents
+
+    ClauseLookupAgent.run(query) → Return matching clauses.
+
+    RiskAnalysisAgent.run(clause) → Compare vs playbook + precedents.
+
+    RedlineAgent.run(clause, reference) → Suggest edits with citations.
+
+    LineageAgent.run(doc_id) → Return doc history.
+
+    Core
+
+    LLM.get_response(prompt) → str → Call LLM.
+
+    RAGPipeline.answer(query) → Retrieval + LLM response.
+
+    Tools.search_clauses(query) → Agent tool wrapper for retriever.
+
+
+
+5. Design Principles
+
+    Separation of Concerns: ingestion ≠ indexing ≠ retrieval ≠ agents.
+
+    Extensibility: You can add new doc types by just adding a parser.
+
+    Scalability: Replace Chroma with Pinecone or BM25 with Elastic/OpenSearch without breaking flow.
+
+    Future-proof:
+
+    Later add api/ folder (FastAPI).
+
+    Later add ui/ folder (Streamlit).
+
+    Core code remains unchanged.

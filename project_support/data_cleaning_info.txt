@@ -1,0 +1,35 @@
+1. What type of cleaning is required
+
+a. Remove obvious noise
+
+Drop page numbers, footers, headers, and artifacts like "---", “<unknown>”, etc.
+
+Remove repetitive metadata (like "Page: 1, Label: TEXT").
+
+b. Normalize text
+
+Convert multiple spaces, tabs, and line breaks into a single space.
+
+Standardize quotation marks, apostrophes, and hyphens.
+
+Strip leading/trailing whitespace.
+
+c. Merge fragmented lines
+
+Merge text chunks belonging to the same logical paragraph (Docling often breaks sentences mid-way).
+
+Preserve section headers (like "O R D E R" or "SETTLEMENT AGREEMENT") as separators.
+
+d. Remove OCR artifacts
+
+Clean isolated numerals like “1”, “2” which are actually page footers.
+
+Handle encoding issues (“, ”, – → ", ", -).
+
+e. Optional enrichment for RAG
+
+Add structured metadata: {"page": 1, "section": "ORDER", "content": "..."}
+
+Split long paragraphs into ~500 tokens for better embedding.
+
+Lowercase if consistent with your retrieval approach (optional).

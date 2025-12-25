@@ -1,0 +1,108 @@
+legal-navigator/
+│
+├── main.py                        # CLI entry point (typer commands)
+│
+├── config/
+│   ├── settings.py                # Model names, DB URIs, paths
+│   └── logging_config.py          # Logging setup
+│
+├── data/                          # Documents and processed outputs
+│   ├── raw/                       # Uploaded originals
+│   ├── processed/                 # Normalized JSON/text versions
+│   └── lineage/                   # Metadata & version tracking
+│
+├── ingestion/
+│   ├── document_loader.py         # Load PDF/DOCX
+│   ├── type_detector.py           # Detect doc type (contract/case/playbook)
+│   ├── contract_parser.py         # Extract clauses
+│   ├── playbook_parser.py         # Extract rules/fallbacks
+│   ├── case_parser.py             # Extract facts/holdings
+│   ├── statute_parser.py          # Extract sections
+│   └── metadata_extractor.py      # Add jurisdiction, version info
+│
+├── indexing/
+│   ├── vector_store.py            # Chroma wrapper
+│   ├── keyword_store.py           # Elasticsearch/Whoosh wrapper
+│   └── reranker.py                # Cross-encoder reranker
+│
+├── retrieval/
+│   ├── hybrid_retriever.py        # Combines dense+sparse
+│   └── query_builder.py           # Formats user query
+│
+├── agents/
+│   ├── clause_lookup_agent.py     # Finds clauses across docs
+│   ├── risk_analysis_agent.py     # Checks playbooks + case law
+│   ├── redline_agent.py           # Suggests edits with sources
+│   └── lineage_agent.py           # Tracks doc versions
+│
+├── core/
+│   ├── llm.py                     # LangChain LLM setup
+│   ├── rag_pipeline.py            # Retrieval + LLM orchestration
+│   └── tools.py                   # Agent tools (search, diff, lineage)
+│
+├── utils/
+│   ├── file_utils.py              # File helpers
+│   ├── text_utils.py              # Cleaning, normalization
+│   └── diff_utils.py              # Redline/diff helpers
+│
+├── tests/
+│   ├── test_ingestion.py
+│   ├── test_indexing.py
+│   ├── test_retrieval.py
+│   └── test_agents.py
+│
+└── requirements.txt               # Dependencies
+
+
+1. Document Flow (all docs)
+
+Ingestion
+
+Accept PDF/DOCX/TXT.
+
+Detect type (contract / playbook / case summary / statute / memo).
+
+Parse accordingly.
+
+Preprocessing
+
+Contracts → split into clauses.
+
+Playbooks → extract rules, fallback positions.
+
+Case summaries → extract key holdings, facts, risks.
+
+Statutes → extract section/subsection.
+
+Attach metadata (doc type, jurisdiction, version, lineage).
+
+Indexing
+
+Dense store (Chroma) → semantic similarity.
+
+Sparse index (Elasticsearch or Whoosh) → keyword/BM25 search.
+
+Store metadata for lineage & version.
+
+Retrieval
+
+Hybrid search (dense + BM25) + reranker.
+
+Queries can target specific doc types or mixed.
+
+Agent Orchestration (LangChain)
+
+Clause Lookup Agent → Find clause across all sources.
+
+Risk Agent → Pull playbook + case law guidance.
+
+Redline Agent → Suggest edits + citations.
+
+Lineage Agent → Show version history.
+
+Consumption
+
+Start via CLI.
+
+Later: wrap retrieval + agent calls in FastAPI endpoints → add Streamlit UI.
+

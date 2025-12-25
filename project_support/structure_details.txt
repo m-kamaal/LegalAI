@@ -1,0 +1,255 @@
+1. main.py
+
+    Purpose: CLI entry point to run ingestion, indexing, querying, or agents.
+
+    Connections: Calls methods from ingestion, indexing, retrieval, and agents.
+
+    Important methods:
+
+    ingest(file_path)
+    """Load a document, detect type, parse, and push to indexing pipeline."""
+
+    query(query_str)
+    """Run a retrieval + agent workflow for user queries."""
+
+    run_agent(agent_name, input_data)
+    """Call a specific agent with given input."""
+
+2. config/
+    settings.py
+
+    Purpose: Central place for model names, DB URIs, paths.
+
+    Example entries: embedding model = “sentence-transformers/legal-bert”, chroma_db_path, elasticsearch_url.
+
+    logging_config.py
+
+    Purpose: Defines app-wide logging format.
+
+3. data/
+
+    raw/: Uploaded docs.
+
+    processed/: Structured outputs (JSON chunks with metadata).
+
+    lineage/: Metadata for version tracking.
+
+4. ingestion/
+
+    Role: Takes raw files → parses into structured chunks with metadata.
+
+    document_loader.py
+
+    DocumentLoader.load_doc(file_path)
+    """Reads raw DOCX/PDF/TXT file and returns plain text."""
+
+    type_detector.py
+
+    TypeDetector.detect_type(text)
+    """Classifies document as contract / playbook / case / statute / memo."""
+
+    contract_parser.py
+
+    ContractParser.split_clauses(text)
+    """Splits contract into clauses (with IDs, headings, body)."""
+
+    playbook_parser.py
+
+    PlaybookParser.extract_rules(text)
+    """Extracts firm guidelines: standard, fallback, risky positions."""
+
+    case_parser.py
+
+    CaseParser.extract_summary(text)
+    """Extracts case metadata: facts, holdings, risks."""
+
+    statute_parser.py
+
+    StatuteParser.extract_sections(text)
+    """Splits statute into sections/subsections for retrieval."""
+
+    metadata_extractor.py
+
+    MetadataExtractor.add_metadata(doc, metadata)
+    """Attaches metadata like jurisdiction, date, version, lineage."""
+
+    Connections:
+
+    Output goes to indexing/vector_store.py and indexing/keyword_store.py.
+
+    Metadata written into data/lineage/.
+
+5. indexing/
+
+    Role: Store processed docs in retrieval systems.
+
+    vector_store.py
+
+    VectorStore.add(docs)
+    """Embeds documents and adds them to Chroma DB."""
+
+    VectorStore.search(query, top_k)
+    """Returns top_k semantic matches from Chroma."""
+
+    keyword_store.py
+
+    KeywordStore.index(docs)
+    """Indexes docs into Elasticsearch for keyword search."""
+
+    KeywordStore.search(query, top_k)
+    """Returns keyword matches using BM25."""
+
+    reranker.py
+
+    Reranker.rank(query, docs)
+    """Reorders retrieved docs using cross-encoder relevance scoring."""
+
+    Connections:
+
+    Called by retrieval/hybrid_retriever.py.
+
+6. retrieval/
+
+    Role: Query interface combining vector + keyword + reranker.
+
+    hybrid_retriever.py
+
+    HybridRetriever.search(query, top_k)
+    """Runs dense + sparse search, merges results, applies reranker."""
+
+    query_builder.py
+
+    QueryBuilder.build(user_input)
+    """Normalizes user query (expands synonyms, legal terms)."""
+
+    Connections:
+
+    Used inside agents to fetch context.
+
+    Feeds into core/rag_pipeline.py.
+
+7. agents/
+
+    Role: Orchestrate workflows with tools + retrieval + LLMs.
+
+    clause_lookup_agent.py
+
+    ClauseLookupAgent.run(query)
+    """Finds clauses across contracts/statutes using retrieval pipeline."""
+
+    risk_analysis_agent.py
+
+    RiskAnalysisAgent.run(clause)
+    """Checks clause against playbooks + case summaries, flags risks."""
+
+    redline_agent.py
+
+    RedlineAgent.run(clause, reference)
+    """Suggests edits with inline citations, based on preferred clauses."""
+
+    lineage_agent.py
+
+    LineageAgent.run(doc_id)
+    """Tracks and presents clause/document version history."""
+
+    Connections:
+
+    Agents call:
+
+    Retrieval (retrieval/hybrid_retriever.py)
+
+    Tools (core/tools.py)
+
+    LLM (core/llm.py)
+
+    Utilities (utils/diff_utils.py)
+
+8. core/
+
+    Role: Core LLM + RAG orchestration.
+
+    llm.py
+
+    LLM.get_response(prompt)
+    """Wrapper for LangChain LLM calls."""
+
+    rag_pipeline.py
+
+    RAGPipeline.answer(query)
+    """Executes retrieval + reranking + LLM summarization."""
+
+    tools.py
+
+    Tools.search_clauses(query)
+    """Agent tool for clause lookup."""
+
+    Tools.compare_clauses(clause, reference)
+    """Generates structured diff."""
+
+    Tools.fetch_lineage(doc_id)
+    """Fetches document history metadata."""
+
+Connections:
+
+    Used inside agents.
+
+    RAGPipeline = common flow for all agents needing retrieval.
+
+9. utils/
+
+    Role: General helpers.
+
+    file_utils.py
+
+    FileUtils.save_json(data, path)
+    """Helper to save structured docs."""
+
+    text_utils.py
+
+    TextUtils.clean_text(text)
+    """Removes boilerplate, normalizes whitespace, tokenizes."""
+
+    diff_utils.py
+
+    DiffUtils.generate_diff(text1, text2)
+    """Creates redline-style diff between two clauses."""
+
+    Connections:
+
+    Used by ingestion, agents, and indexing.
+
+10. tests/
+
+    Contains unit + integration tests for ingestion, indexing, retrieval, and agents.
+
+    How Everything Fits Together (Flow Example)
+
+    User Input: “Review this indemnity clause for risks.”
+
+    main.py calls → RiskAnalysisAgent.run(clause).
+
+    RiskAnalysisAgent uses:
+
+    HybridRetriever.search(clause) → pulls similar clauses + playbook entries.
+
+    Reranker.rank() → sorts by relevance.
+
+    Tools.compare_clauses() → highlight differences.
+
+    LLM.get_response() → explain risk in natural language.
+
+    Agent returns → “This clause is riskier than standard. Suggested redline: … (citing Playbook v3.2, Case ABC vs XYZ).”
+
+👉 In short:
+
+    Ingestion = raw → structured.
+
+    Indexing = structured → searchable.
+
+    Retrieval = searchable → relevant docs.
+
+    Agents = orchestrate retrieval + tools + LLM for workflows.
+
+    Core = shared LLM + RAG logic.
+
+    Utils = helpers everywhere.
