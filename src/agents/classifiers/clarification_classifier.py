@@ -1,5 +1,5 @@
 from src.llm_chain.llm_builder import get_llm_model, get_llm_response
-from src.llm_chain.prompt_template import clarification_required_hint
+from src.prompt_tempaltes.prompt_template import clarification_required_hint
 import json
 
 def clarification_classifier(user_query):

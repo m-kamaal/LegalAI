@@ -1,5 +1,5 @@
 from src.llm_chain.llm_builder import get_llm_model, get_llm_response
-from src.llm_chain.prompt_template import llm_answer_prompt, clarification_ques
+from src.prompt_tempaltes.prompt_template import llm_answer_prompt, clarification_ques
 from src.data_preprocessing.text_cleaning import cleaner_pipeline
 
 #simple and direct llm call 

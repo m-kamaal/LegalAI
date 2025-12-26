@@ -1,7 +1,7 @@
 """ To classify wether the given user query requires agent to call retrival tool or not"""
 """improve query classifier logic with this solution: https://chatgpt.com/share/6939ab5f-cf9c-800b-b75c-f8467db1f380"""
 
-from src.llm_chain.prompt_template import retrieval_use_hint
+from src.prompt_tempaltes.prompt_template import retrieval_use_hint
 import json
 from src.data_preprocessing.text_cleaning import cleaner_pipeline
 from src.llm_chain.llm_builder import get_llm_model, get_llm_response
