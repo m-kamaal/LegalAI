@@ -7,7 +7,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from dotenv import load_dotenv
 load_dotenv()
 
-from src.llm_chain.prompt_template import retrieval_use_hint
+from src.prompt_tempaltes.prompt_template import retrieval_use_hint
 
 api_key = os.getenv("EURON_KEY")
 
