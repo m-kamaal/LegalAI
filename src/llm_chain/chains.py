@@ -2,6 +2,9 @@ from src.llm_chain.llm_builder import get_llm_model, get_llm_response
 from src.prompt_tempaltes.prompt_template import llm_answer_prompt, clarification_ques
 from src.data_preprocessing.text_cleaning import cleaner_pipeline
 
+"""Chain is supposed to use LCEL and pipe operator"""
+
+
 #simple and direct llm call 
 def run_llm_without_context(query):
     model = get_llm_model()
