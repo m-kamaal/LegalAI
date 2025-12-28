@@ -19,7 +19,6 @@ result = {
   "distances": [[dist1, dist2]]
 }
 """
-@staticmethod
 def retreived_doc_formatter(doc):
 
     results = []
