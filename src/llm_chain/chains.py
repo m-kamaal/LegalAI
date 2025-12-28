@@ -1,5 +1,5 @@
 from src.llm_chain.llm_builder import get_llm_model, get_llm_response
-from src.prompt_tempaltes.prompt_template import llm_answer_prompt, clarification_ques
+from src.prompt_templates.prompt_template import llm_answer_prompt, clarification_ques
 from src.data_preprocessing.text_cleaning import cleaner_pipeline
 
 """Chain is supposed to use LCEL and pipe operator"""
@@ -13,6 +13,13 @@ def run_llm_without_context(query):
 
 
 #llm call by passing user question and retreived data
+
+"""
+run_llm_with_context = prompt | LLM | Output pydantic schema
+
+query cleaning and all not required
+"""
+
 def run_llm_with_context(query, contexts):
 
     cleaned_query = cleaner_pipeline(query)

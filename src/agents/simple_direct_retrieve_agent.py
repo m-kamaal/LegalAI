@@ -3,7 +3,7 @@ Direct retrieval and ans should be generated
 """
 
 from src.retrieval.content_retriever import content_retriever #returns document content in json
-from src.prompt_tempaltes.prompt_template import llm_answer_prompt
+from src.prompt_templates.prompt_template import llm_answer_prompt
 from src.llm_chain.llm_builder import get_llm_model, get_llm_response
 
 def simple_agent(user_input):

@@ -1,4 +1,5 @@
 from langchain_core.prompts import PromptTemplate
+#from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 
 LLM_ANSWER_GENERATION_PROMPT = """You are an assistant that answers user questions using only the provided CONTEXT blocks.
 If the answer is not present in the context, reply exactly: "I don't know".
