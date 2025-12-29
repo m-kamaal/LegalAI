@@ -6,7 +6,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.agents.simple_direct_retrieve_agent import simple_agent
 
-user_input = input("Enter your query: ")
+user_input = input("Enter your prompt: ")
 
 ans = simple_agent(user_input)
 
