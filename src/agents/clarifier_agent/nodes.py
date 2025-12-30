@@ -55,7 +55,7 @@ def ambiguity_checker(state: StateSchema, llm) -> StateSchema:
 # ---------------------------------------------------------
 
 def classfier_ques_generator(state: StateSchema, llm) -> StateSchema:
-    chain = clarification_question_prompt | llm
+    chain = clarification_question_generation_prompt | llm
 
     question = chain.invoke({
         "conversation_history": format_conversation(
@@ -71,5 +71,55 @@ def classfier_ques_generator(state: StateSchema, llm) -> StateSchema:
     })
 
     state["clarifications_asked_count"] += 1
+
+    return state
+
+# ---------------------------------------------------------
+# Node 3: Wait for User (human-in-the-loop)
+# ---------------------------------------------------------
+
+def wait_for_user(state: StateSchema, user_input: str) -> StateSchema:
+    state["conversation_history"].append({
+        "role": "user",
+        "content": user_input,
+    })
+    return state
+
+# ---------------------------------------------------------
+# Node 4: Stop Condition Checker (NO LLM)
+# ---------------------------------------------------------
+
+def check_for_stop(state: StateSchema) -> StateSchema:
+    if state["clarification_need"] is False:
+        state["stop_reason"] = "intent_clear"
+        return state
+
+    if state["clarifications_asked_count"] >= 3:
+        state["stop_reason"] = "max_clarifications_reached"
+        return state
+
+    state["stop_reason"] = None
+    return state
+
+
+# ---------------------------------------------------------
+# Node 5: Intent Consolidator
+# ---------------------------------------------------------
+
+def intent_consolidator(state: StateSchema, llm) -> StateSchema:
+    parser = JsonOutputParser()
+
+    chain = user_query_consolidation_prompt | llm | parser
+
+    response = chain.invoke({
+        "original_user_query": state["original_user_query"],
+        "conversation_history": format_conversation(
+            state["conversation_history"]
+        ),
+    })
+
+    state["consolidated_query"] = response["consolidated_query"]
+    state["ambiguity_score"] = response["ambiguity_score"]
+    state["stop_reason"] = response["stop_reason"]
 
     return state
