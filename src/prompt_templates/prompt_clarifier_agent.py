@@ -110,7 +110,6 @@ Respond ONLY in valid JSON matching this schema:
 
 {{
   "consolidated_query": "<final clarified user query>",
-  "ambiguity_score": <float between 0.0 and 1.0>,
   "stop_reason": "<reason for stopping, e.g. 'intent_clear' or 'max_clarifications_reached'>"
 }}
 

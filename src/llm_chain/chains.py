@@ -1,6 +1,8 @@
 from src.llm_chain.llm_builder import get_llm_model, get_llm_response
 from src.prompt_templates.prompt_template import llm_answer_prompt, clarification_ques
-from src.prompt_templates.prompt_clarifier_agent import clarification_question_generation_prompt, ambiguity_check_prompt
+from src.prompt_templates.prompt_clarifier_agent import (clarification_question_generation_prompt,
+                                                         ambiguity_check_prompt,
+                                                         user_query_consolidation_prompt)
 from src.data_preprocessing.text_cleaning import cleaner_pipeline
 
 from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
@@ -20,12 +22,6 @@ def _llm_without_context_chain(query):
 
 
 #llm call by passing user question and retreived data
-
-"""
-run_llm_with_context = prompt | LLM | Output pydantic schema
-query cleaning and all not required
-"""
-
 def _llm_with_context_chain(query, contexts):
 
     _cleaned_query = cleaner_pipeline(query)
@@ -58,4 +54,21 @@ def _ambiguity_checker_chain(convo_history):
     chain = ambiguity_check_prompt | model | json_output
 
     return chain.invoke(convo_history)
+
+
+#this funtion calls the chain that creates a consolidated query of users chat history
+def _query_consolidator_chain(original_query, convo_history):
+    """This function calls the llm to create a consolidated string of entire user query and its history
+    Args:
+        original_query: str
+        convo_history: str
+    Returns:
+        consolidated_query: str
+        stop_reason: str
+    """
+
+    chain = user_query_consolidation_prompt | model | string_output
+
+    return chain.invoke({"original_user_query":original_query,
+                         "conversation_history": convo_history})
 
