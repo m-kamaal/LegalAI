@@ -16,7 +16,7 @@ from src.retrieval.utils import retreived_doc_formatter
 
 
 
-def content_retriever(user_query, k):
+def content_retriever(user_query, k= 5):
     '''Inputs embedding of user query and gets results of top k similar content from stored documents and returns fomrated content to be passed to LLM'''
 
     emb = query_processing_pipeline(user_query)
