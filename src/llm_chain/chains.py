@@ -1,37 +1,61 @@
 from src.llm_chain.llm_builder import get_llm_model, get_llm_response
 from src.prompt_templates.prompt_template import llm_answer_prompt, clarification_ques
+from src.prompt_templates.prompt_clarifier_agent import clarification_question_generation_prompt, ambiguity_check_prompt
 from src.data_preprocessing.text_cleaning import cleaner_pipeline
 
-from langchain_core.runnables import RunnableLambda
-from langchain_core.output_parsers import StrOutputParser
+from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
 
 """Chain is supposed to use LCEL and pipe operator i.e langchain runnablesequence() only"""
 
 string_output = StrOutputParser()
+json_output = JsonOutputParser()
+model = get_llm_model()
 
 #simple and direct llm call 
-def run_llm_without_context(query):
-    model = get_llm_model()
+def _llm_without_context_chain(query):
     
-    simple_llm_generation = query | model | string_output
+    chain = query | model | string_output
     
-    return simple_llm_generation.invoke(query)
+    return chain.invoke(query)
 
 
 #llm call by passing user question and retreived data
 
 """
 run_llm_with_context = prompt | LLM | Output pydantic schema
-
 query cleaning and all not required
 """
 
-def run_llm_with_context(query, contexts):
+def _llm_with_context_chain(query, contexts):
 
-    cleaned_query = cleaner_pipeline(query)
-    model = get_llm_model()
+    _cleaned_query = cleaner_pipeline(query)
+    chain = llm_answer_prompt | model | string_output
 
-    run_llm_with_context_chain = llm_answer_prompt | model | string_output
+    return chain.invoke({"user_query":_cleaned_query, "contexts":contexts})
 
-    return run_llm_with_context_chain.invoke({"user_query":cleaned_query, "contexts":contexts})
+
+#chain for clarification ques generation
+def _clarifiaction_ques_generation_chain(convo_history,
+                                   ambiguity_reason,
+                                   clarifications_asked_count):
+
+    chain = clarification_question_generation_prompt | model | json_output
+
+    return chain.invoke({"conversation_history":convo_history, 
+                         "ambiguity_reason":ambiguity_reason, 
+                         "clarifications_asked_count":clarifications_asked_count})
+
+#to check if there is ambiguity in user query or not
+def _ambiguity_checker_chain(convo_history):
+    """This function returns a json output of llm response in format.
+        Args:
+            convo_history: str
+        Returns:
+            clarification_need: boolean
+            ambiguity_reason: str
+            ambiguity_score: float
+    """
+    chain = ambiguity_check_prompt | model | json_output
+
+    return chain.invoke(convo_history)
 
