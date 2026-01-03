@@ -12,11 +12,11 @@ from src.agents.clarifier_agent.nodes import (
 )
 
 # Node name constants
-AMBIGUITY_CHECKER = "ambiguity_checker"
-CLARIFIER_QUES_GEN = "clarification_ques_generator"
-WAIT_FOR_USER = "wait_for_user"
-CHECK_FOR_STOP = "check_for_stop"
-CONSOLIDATOR = "intent_consolidator"
+_AMBIGUITY_CHECKER = "ambiguity_checker"
+_CLARIFIER_QUES_GEN = "clarification_ques_generator"
+_WAIT_FOR_USER = "wait_for_user"
+_CHECK_FOR_STOP = "check_for_stop"
+_CONSOLIDATOR = "intent_consolidator"
 
 # ---------------------------------------------------------
 # Routing functions (PURE logic, no LLM)
@@ -28,8 +28,8 @@ def route_after_ambiguity(state: StateSchema) -> str:
     or move towards stopping logic.
     """
     if state["clarification_need"]:
-        return CLARIFIER_QUES_GEN
-    return CHECK_FOR_STOP
+        return _CLARIFIER_QUES_GEN
+    return _CHECK_FOR_STOP
 
 
 def route_after_stop_check(state: StateSchema) -> str:
@@ -38,68 +38,69 @@ def route_after_stop_check(state: StateSchema) -> str:
     or loop back for further clarification.
     """
     if state["stop_reason"] is not None:
-        return CONSOLIDATOR
-    return AMBIGUITY_CHECKER
+        return _CONSOLIDATOR
+    return _AMBIGUITY_CHECKER
 
 # ---------------------------------------------------------
 # Graph builder
 # ---------------------------------------------------------
 
 def build_clarifier_agent_graph(llm):
+    
     graph = StateGraph(StateSchema)
 
     # ---- Register nodes ----
     graph.add_node(
-        AMBIGUITY_CHECKER,
+        _AMBIGUITY_CHECKER,
         lambda state: ambiguity_checker(state, llm),
     )
 
     graph.add_node(
-        CLARIFIER_QUES_GEN,
+        _CLARIFIER_QUES_GEN,
         lambda state: clarification_ques_generator(state, llm),
     )
 
     graph.add_node(
-        WAIT_FOR_USER,
+        _WAIT_FOR_USER,
         wait_for_user,  # called externally with user input
     )
 
     graph.add_node(
-        CHECK_FOR_STOP,
+        _CHECK_FOR_STOP,
         check_for_stop,
     )
 
     graph.add_node(
-        CONSOLIDATOR,
+        _CONSOLIDATOR,
         lambda state: intent_consolidator(state, llm),
     )
 
     # ---- Entry point ----
-    graph.set_entry_point(AMBIGUITY_CHECKER)
+    graph.set_entry_point(_AMBIGUITY_CHECKER)
 
     # ---- Conditional edges ----
     graph.add_conditional_edges(
-        AMBIGUITY_CHECKER,
+        _AMBIGUITY_CHECKER,
         route_after_ambiguity,
     )
 
     graph.add_edge(
-        CLARIFIER_QUES_GEN,
-        WAIT_FOR_USER,
+        _CLARIFIER_QUES_GEN,
+        _WAIT_FOR_USER,
     )
 
     graph.add_edge(
-        WAIT_FOR_USER,
-        AMBIGUITY_CHECKER,
+        _WAIT_FOR_USER,
+        _AMBIGUITY_CHECKER,
     )
 
     graph.add_conditional_edges(
-        CHECK_FOR_STOP,
+        _CHECK_FOR_STOP,
         route_after_stop_check,
     )
 
     graph.add_edge(
-        CONSOLIDATOR,
+        _CONSOLIDATOR,
         END,
     )
 
