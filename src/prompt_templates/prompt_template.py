@@ -69,52 +69,11 @@ EXAMPLES (model must follow these):
 - DONT_RETRIEVE example: "How does property registration work?" → DONT_RETRIEVE (procedural).
 - AMBIGUOUS example: "What does clause 4 say?" → RETRIEVE (default to safety).
 
-FINAL: Process the User Query now.
-User Query: {user_query}
+FINAL: Process the entire user and assistant (i.e LLM) conversation history so far.
+conversation hsitory: {conversation_history}
+
 """
 
-
-CLARIFICATION_HINT_PROMPT = """You are a classifier for a legal AI system.
-
-Your task is to decide whether the user's query requires clarification
-before it can be answered accurately.
-
-Consider:
-- Ambiguity in intent
-- Missing critical details (time period, jurisdiction, parties, amounts)
-- Multiple possible interpretations
-- Whether answering without clarification risks being incorrect
-
-User Query:
-{user_query}
-
-Respond ONLY in valid JSON:
-
-{{
-  "needs_clarification": true or false,
-  "confidence": <float between 0 and 1>,
-  "reasoning": "<short explanation>"
-}}
-
-Do not ask any questions.
-Do not add any extra text.
-"""
-
-CLARIFICATION_QUES_PROMPT = """You are a legal AI assistant.
-
-The user's query cannot be answered accurately without clarification.
-
-User Query:
-{user_query}
-
-Your task:
-- Ask ONE clear and specific clarification question
-- Do NOT explain why clarification is needed
-- Do NOT provide any legal advice
-- Do NOT ask multiple questions
-
-Return only the clarification question.
-"""
 
 
 llm_answer_prompt = PromptTemplate(
@@ -126,14 +85,4 @@ llm_answer_prompt = PromptTemplate(
 retrieval_use_hint = PromptTemplate(
     input_variables=["user_query"],
     template=TOOL_USE_HINT_PROMPT
-)
-
-clarification_required_hint = PromptTemplate(
-    input_variables=["user_query"],
-    template=CLARIFICATION_HINT_PROMPT
-)
-
-clarification_ques = PromptTemplate(
-    input_variables=["user_query"],
-    template= CLARIFICATION_QUES_PROMPT
 )

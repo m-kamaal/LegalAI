@@ -1,6 +1,6 @@
 # agents/clarifier_agent/graph.py
 
-from langgraph.graph import StateGraph, END
+from langgraph.graph import StateGraph, END, START
 
 from src.schema.state_schema import StateSchema
 from src.agents.clarifier_agent.nodes import (
@@ -45,19 +45,19 @@ def route_after_stop_check(state: StateSchema) -> str:
 # Graph builder
 # ---------------------------------------------------------
 
-def build_clarifier_agent_graph(llm):
+def build_clarifier_agent_graph():
     
     graph = StateGraph(StateSchema)
 
     # ---- Register nodes ----
     graph.add_node(
         _AMBIGUITY_CHECKER,
-        lambda state: ambiguity_checker(state, llm),
+        lambda state: ambiguity_checker(state),
     )
 
     graph.add_node(
         _CLARIFIER_QUES_GEN,
-        lambda state: clarification_ques_generator(state, llm),
+        lambda state: clarification_ques_generator(state),
     )
 
     graph.add_node(
@@ -72,7 +72,7 @@ def build_clarifier_agent_graph(llm):
 
     graph.add_node(
         _CONSOLIDATOR,
-        lambda state: intent_consolidator(state, llm),
+        lambda state: intent_consolidator(state),
     )
 
     # ---- Entry point ----

@@ -1,8 +1,8 @@
 from src.llm_chain.llm_builder import get_llm_model, get_llm_response
-from src.prompt_templates.prompt_template import llm_answer_prompt, clarification_ques
 from src.prompt_templates.prompt_clarifier_agent import (clarification_question_generation_prompt,
                                                          ambiguity_check_prompt,
                                                          user_query_consolidation_prompt)
+from src.prompt_templates.prompt_template import retrieval_use_hint,llm_answer_prompt
 from src.data_preprocessing.text_cleaning import cleaner_pipeline
 
 from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
@@ -27,6 +27,7 @@ def _llm_with_context_chain(query, contexts):
     _cleaned_query = cleaner_pipeline(query)
     chain = llm_answer_prompt | model | string_output
 
+
     return chain.invoke({"user_query":_cleaned_query, "contexts":contexts})
 
 
@@ -35,7 +36,7 @@ def _clarifiaction_ques_generation_chain(convo_history,
                                    ambiguity_reason,
                                    clarifications_asked_count):
 
-    chain = clarification_question_generation_prompt | model | json_output
+    chain = clarification_question_generation_prompt | model | string_output
 
     return chain.invoke({"conversation_history":convo_history, 
                          "ambiguity_reason":ambiguity_reason, 
@@ -47,7 +48,7 @@ def _ambiguity_checker_chain(convo_history):
         Args:
             convo_history: str
         Returns:
-            clarification_need: boolean
+            clarification_need: "Yes" or "No"
             ambiguity_reason: str
             ambiguity_score: float
     """
@@ -71,4 +72,11 @@ def _query_consolidator_chain(original_query, convo_history):
 
     return chain.invoke({"original_user_query":original_query,
                          "conversation_history": convo_history})
+
+def _retrieval_required_checker_chain(conversation_history):
+    """This function checks if based on the user queries if retrieval is required or not"""
+    
+    chain = retrieval_use_hint | model | json_output
+
+    return chain.invoke({"conversation_history":conversation_history})
 

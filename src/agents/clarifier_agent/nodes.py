@@ -2,7 +2,7 @@
 
 
 from src.schema.state_schema import StateSchema
-from prompt_templates.prompt_clarifier_agent import ambiguity_check_prompt, user_query_consolidation_prompt
+
 from src.llm_chain.chains import (_clarifiaction_ques_generation_chain,
                                   _ambiguity_checker_chain,
                                   _query_consolidator_chain)
