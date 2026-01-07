@@ -24,11 +24,10 @@ def _llm_without_context_chain(query):
 #llm call by passing user question and retreived data
 def _llm_with_context_chain(query, contexts):
 
-    _cleaned_query = cleaner_pipeline(query)
     chain = llm_answer_prompt | model | string_output
 
 
-    return chain.invoke({"user_query":_cleaned_query, "contexts":contexts})
+    return chain.invoke({"user_query":query, "contexts":contexts})
 
 
 #chain for clarification ques generation
