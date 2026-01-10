@@ -46,6 +46,7 @@ def _ambiguity_checker_chain(convo_history):
     """This function returns a json output of llm response in format.
         Args:
             convo_history: str
+            clarifi_count: int
         Returns:
             clarification_need: "Yes" or "No"
             ambiguity_reason: str
