@@ -6,6 +6,7 @@ from src.prompt_templates.prompt_template import retrieval_use_hint,llm_answer_p
 from src.data_preprocessing.text_cleaning import cleaner_pipeline
 
 from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
+from langchain_core.prompts import PromptTemplate
 
 """Chain is supposed to use LCEL and pipe operator i.e langchain runnablesequence() only"""
 
@@ -16,7 +17,7 @@ model = get_llm_model()
 #simple and direct llm call 
 def _llm_without_context_chain(query):
     
-    chain = query | model | string_output
+    chain = model | string_output
     
     return chain.invoke(query)
 
@@ -73,10 +74,10 @@ def _query_consolidator_chain(original_query, convo_history):
     return chain.invoke({"original_user_query":original_query,
                          "conversation_history": convo_history})
 
-def _retrieval_required_checker_chain(conversation_history):
+def _retrieval_required_checker_chain(conversation_history, retrieved_data=None):
     """This function checks if based on the user queries if retrieval is required or not"""
     
     chain = retrieval_use_hint | model | json_output
 
-    return chain.invoke({"conversation_history":conversation_history})
+    return chain.invoke({"conversation_history":conversation_history, "retrieved_data":retrieved_data})
 

@@ -1,6 +1,16 @@
 
-from typing import TypedDict, Literal, Annotated
+from typing import TypedDict, Literal, Annotated, List, Optional
 from langgraph.graph.message import BaseMessage, add_messages
+
+class RetrievedChunk(TypedDict):
+    document: str
+    metadata: dict
+    distance: float
+
+def merge_retrieved_data(left: List[RetrievedChunk], right: List[RetrievedChunk]) -> List[RetrievedChunk]:
+    if not left: left = []
+    if not right: right = []
+    return left + right
 
 class StateSchema(TypedDict):
     original_user_query: str #fixed value throughout state
@@ -18,3 +28,7 @@ class StateSchema(TypedDict):
     stop_reason: str
     
     retrieval_needed: Literal["RETRIEVE", "DONT_RETRIEVE"] #decided once for one iteration
+    retreival_reasoning: str
+    retrieved_data: Annotated[List[RetrievedChunk], merge_retrieved_data]
+
+

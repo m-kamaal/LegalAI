@@ -22,7 +22,7 @@ TOOL_USE_HINT_PROMPT = """You are a deterministic retrieval-decider for a legal 
 
 RULES (apply top-down — first match wins):
 1) STRONG — ALWAYS RETRIEVE (decision = "RETRIEVE"):
-   - Any query that mentions a named individual, party, or organization in combination with an outcome/status/question (patterns include, but are not limited to):
+   - Any query in conversation_history that mentions a named individual, party, or organization in combination with an outcome/status/question (patterns include, but are not limited to):
      - "what happened to <NAME>", "status of <NAME>", "who has custody of <NAME>",
      - "what was the decision in <NAME> v. <NAME>", "what happened in the case of <NAME>"
    - Any explicit reference to documents or filings: "our documents", "this case", "the contract", "sale deed", "agreement", "lease", "notice", "order", "judgment", "docket", "assessment order", "tax notice".
@@ -69,8 +69,9 @@ EXAMPLES (model must follow these):
 - DONT_RETRIEVE example: "How does property registration work?" → DONT_RETRIEVE (procedural).
 - AMBIGUOUS example: "What does clause 4 say?" → RETRIEVE (default to safety).
 
-FINAL: Process the entire user and assistant (i.e LLM) conversation history so far.
+FINAL: This is the entire conversation between Human and AI in chronological order, use it as the context.
 conversation hsitory: {conversation_history}
+Already retreived data from previous conversation (if any): {retrieved_data}
 
 """
 
@@ -83,6 +84,6 @@ llm_answer_prompt = PromptTemplate(
 
 
 retrieval_use_hint = PromptTemplate(
-    input_variables=["user_query"],
+    input_variables=["user_query", "retrieved_data"],
     template=TOOL_USE_HINT_PROMPT
 )

@@ -17,7 +17,11 @@ from src.retrieval.utils import retreived_doc_formatter
 
 
 def content_retriever(user_query, k= 5):
-    '''Inputs embedding of user query and gets results of top k similar content from stored documents and returns fomrated content to be passed to LLM'''
+    '''Inputs embedding of user query and gets results of top k similar content from stored documents and returns fomrated content to be passed to LLM
+    
+        Retruns:
+            List of dictionary i.e {document, metadat, distance} as the keys
+            '''
 
     emb = query_processing_pipeline(user_query)
     doc_content = search_topk(emb, k)
