@@ -35,3 +35,9 @@ LegalAI solves this by using Agentic RAG system that provides solution only from
 - Deploy on cloud
 - Add tests
 - Improve prompts
+
+#Save libraries used
+pipreqs . \
+  --force \
+  --ignore venv311 \
+  --savepath requirements-min.txt
