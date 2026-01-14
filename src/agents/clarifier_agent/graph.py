@@ -1,107 +1,41 @@
-# agents/clarifier_agent/graph.py
-
-from langgraph.graph import StateGraph, END, START
-
+from langgraph.graph import StateGraph
+from langgraph.graph import START, END
+from langgraph.checkpoint.memory import InMemorySaver
 from src.schema.state_schema import StateSchema
-from src.agents.clarifier_agent.nodes import (
-    ambiguity_checker,
-    clarification_ques_generator,
-    wait_for_user,
-    check_for_stop,
-    intent_consolidator
+
+from src.agents.clarifier_agent.nodes import (node_retrieval_decider,
+                                              node_consolidator,
+                                              node_ambiguity_check,
+                                              node_clarification_ques_gen,
+                                              node_generate_llm_response_with_retrieved_context,
+                                              node_retrieve_data,
+                                              node_simple_llm_call,
+                                              check_stop_condition,
+                                              retrieval_router
 )
 
-# Node name constants
-_AMBIGUITY_CHECKER = "ambiguity_checker"
-_CLARIFIER_QUES_GEN = "clarification_ques_generator"
-_WAIT_FOR_USER = "wait_for_user"
-_CHECK_FOR_STOP = "check_for_stop"
-_CONSOLIDATOR = "intent_consolidator"
+graph = StateGraph(StateSchema)
+checkpointer = InMemorySaver()
 
-# ---------------------------------------------------------
-# Routing functions (PURE logic, no LLM)
-# ---------------------------------------------------------
+#Add nodes in graph
+#graph.add_node("user_input_node", node_take_user_input)
+graph.add_node("ambiguity_checker", node_ambiguity_check)
+graph.add_node("clarification_ques_gen", node_clarification_ques_gen)
+graph.add_node("retrieval_decider", node_retrieval_decider)
+graph.add_node("retrieve_data", node_retrieve_data)
+graph.add_node("generate_with_retrieved_data", node_generate_llm_response_with_retrieved_context)
+graph.add_node("simple_llm_call", node_simple_llm_call)
+graph.add_node("consolidator", node_consolidator)
 
-def route_after_ambiguity(state: StateSchema) -> str:
-    """
-    Decide whether to ask a clarification question
-    or move towards stopping logic.
-    """
-    if state["clarification_need"]:
-        return _CLARIFIER_QUES_GEN
-    return _CHECK_FOR_STOP
+#Add Edges
+#graph.add_edge(START, "user_input_node")
+graph.add_edge(START, "ambiguity_checker")
+graph.add_conditional_edges("ambiguity_checker", check_stop_condition, path_map={False:"clarification_ques_gen", True:"retrieval_decider"})
+#graph.add_edge("clarification_ques_gen", "user_input_node")
+graph.add_conditional_edges("retrieval_decider", retrieval_router, {"RETRIEVE": "consolidator", "DONT_RETRIEVE": "simple_llm_call"})
+graph.add_edge("consolidator", "retrieve_data")
+graph.add_edge("retrieve_data", "generate_with_retrieved_data")
 
+def agent_graph_compiler():
 
-def route_after_stop_check(state: StateSchema) -> str:
-    """
-    Decide whether to stop and consolidate
-    or loop back for further clarification.
-    """
-    if state["stop_reason"] is not None:
-        return _CONSOLIDATOR
-    return _AMBIGUITY_CHECKER
-
-# ---------------------------------------------------------
-# Graph builder
-# ---------------------------------------------------------
-
-def build_clarifier_agent_graph():
-    
-    graph = StateGraph(StateSchema)
-
-    # ---- Register nodes ----
-    graph.add_node(
-        _AMBIGUITY_CHECKER,
-        lambda state: ambiguity_checker(state),
-    )
-
-    graph.add_node(
-        _CLARIFIER_QUES_GEN,
-        lambda state: clarification_ques_generator(state),
-    )
-
-    graph.add_node(
-        _WAIT_FOR_USER,
-        wait_for_user,  # called externally with user input
-    )
-
-    graph.add_node(
-        _CHECK_FOR_STOP,
-        check_for_stop,
-    )
-
-    graph.add_node(
-        _CONSOLIDATOR,
-        lambda state: intent_consolidator(state),
-    )
-
-    # ---- Entry point ----
-    graph.set_entry_point(_AMBIGUITY_CHECKER)
-
-    # ---- Conditional edges ----
-    graph.add_conditional_edges(
-        _AMBIGUITY_CHECKER,
-        route_after_ambiguity,
-    )
-
-    graph.add_edge(
-        _CLARIFIER_QUES_GEN,
-        _WAIT_FOR_USER,
-    )
-
-    graph.add_edge(
-        _WAIT_FOR_USER,
-        _AMBIGUITY_CHECKER,
-    )
-
-    graph.add_conditional_edges(
-        _CHECK_FOR_STOP,
-        route_after_stop_check,
-    )
-
-    graph.add_edge(
-        _CONSOLIDATOR,
-        END,
-    )
-
-    return graph.compile()
+    return graph.compile(checkpointer=checkpointer)

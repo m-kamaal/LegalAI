@@ -19,6 +19,9 @@ result = {
   "distances": [[dist1, dist2]]
 }
 """
+
+from src.data_preprocessing.text_cleaning import cleaner_pipeline
+
 def retreived_doc_formatter(doc):
 
     results = []
@@ -29,7 +32,7 @@ def retreived_doc_formatter(doc):
 
     for i in range(len(docs)):
         results.append({
-            "document": docs[i],
+            "document": cleaner_pipeline(docs[i]),
             "metadata": metas[i],
             "distance": dists[i]
         })
@@ -37,6 +40,35 @@ def retreived_doc_formatter(doc):
     # sort by closest distance (smallest first)
     results.sort(key=lambda x: x["distance"])
     return results
+
+def _format_contexts_for_llm(contexts):
+    """
+    Convert list of context dictionaries into formatted text for LLM.
+    
+    Args:
+        contexts: List of dicts with 'document', 'metadata', 'distance' keys
+        
+    Returns:
+        String with formatted, numbered contexts ready for LLM consumption
+    """
+    if not contexts:
+        return "No relevant context found."
+    
+    formatted = []
+    
+    for idx, ctx in enumerate(contexts, 1):
+        # Extract the relevant pieces
+        doc_name = ctx.get('metadata', {}).get('document name', 'Unknown')
+        page_num = ctx.get('metadata', {}).get('page number', 'N/A')
+        content = ctx.get('document', '')
+        
+        # Format as: [Source N: filename, Page X]\ncontent
+        formatted.append(
+            f"[Source {idx}: {doc_name}, Page {page_num}]\n{content}"
+        )
+    
+    # Join all contexts with separators
+    return "\n\n---\n\n".join(formatted)
 
 if __name__ == "__main__":
     doc  ={'ids': [['shaina4500_29', 'shaina4500_30']], 'embeddings': None, 'documents': [['E. VISITATION RIGHT:-', "I. That the permanent custody of minor child will remain with Petitioner/   Mother   and   Respondent Husband/   Father   of   minor   child 'AVNOOR KAUR' shall  have visitation rights   of   18   days   during   summer vacation   and   4   days   during   winter vacation in one calendar year. "]], 'uris': None, 'included': ['metadatas', 'documents', 'distances'], 'data': None, 'metadatas': [[{'document version': '1.7.0', 'document name': 'shaina450062024_2025-09-10', 'page number': 4}, {'page number': 4, 'document name': 'shaina450062024_2025-09-10', 'document version': '1.7.0'}]], 'distances': [[0.910040020942688, 0.9938388466835022]]}

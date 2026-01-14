@@ -17,3 +17,5 @@ def create_docID_for_vectorDB(source_doc_name: str, indices):
     generated_ids = [f"{source_doc_name[:10]}_{index}" for index in indices]
 
     return generated_ids
+
+

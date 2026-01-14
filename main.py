@@ -1,23 +1,9 @@
-from src.agents.rag_agent import QueryRoutingAgent
+from logger import setup_logging
+from src.agents.clarifier_agent.agent_runner import run
 
 def main():
+    setup_logging()
+    run()
 
-    print("------ LEGALAI initiated. Ask your query ------ ")
-    agent = QueryRoutingAgent()
-
-
-    while True:
-        try:
-
-            user_query = input("You: ")
-
-            response = agent.run(user_query)
-
-            print(f"LegalAI bot:\n{response}")
-
-        except Exception as e:
-            print(e)
-
-    
 if __name__ == "__main__":
     main()

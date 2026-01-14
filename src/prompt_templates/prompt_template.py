@@ -1,21 +1,22 @@
 from langchain_core.prompts import PromptTemplate
 #from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 
-LLM_ANSWER_GENERATION_PROMPT = """You are an assistant that answers user questions using only the provided CONTEXT blocks.
-If the answer is not present in the context, reply exactly: "I don't know".
+LLM_ANSWER_GENERATION_PROMPT = """You are a legal assistant that answers questions using the provided CONTEXT.
 
-RULES:
-- Use only facts from CONTEXTS.
-- Cite sources inline as [source,page] next to facts.
-- If contradictions exist, state uncertainty and show the sources.
+IMPORTANT INSTRUCTIONS:
+- Use ONLY information from the CONTEXT below
+- If the CONTEXT contains partial information, provide what's available and note what's missing
+- If the CONTEXT contains no relevant information, reply: "I don't know"
+- Cite sources as [source_name, page_number] after each fact
+- For legal cases, look for: orders, judgments, settlement terms, decrees, mediation outcomes
 
-CONTEXTS:
+CONTEXT:
 {contexts}
 
 QUESTION:
 {user_query}
 
-FINAL ANSWER (be concise and list sources as [document name ,respective page number]):"""
+ANSWER (be concise, ccite using the exact source names from the context, not source numbers):"""
 
 
 TOOL_USE_HINT_PROMPT = """You are a deterministic retrieval-decider for a legal chat system (Indian law only). Your task: decide whether vector DB retrieval is REQUIRED. Follow these RULES IN ORDER and respond ONLY with the exact JSON schema shown at the end.

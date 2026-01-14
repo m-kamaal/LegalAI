@@ -1,97 +1,120 @@
-"""https://chatgpt.com/share/695171c4-9920-800b-b22a-f2b68c9b8e54"""
+YELLOW = "\033[93m"
+RESET = "\033[0m"
 
-
+from src.llm_chain.chains import (_ambiguity_checker_chain,
+                                  _clarifiaction_ques_generation_chain,
+                                  _query_consolidator_chain,
+                                  _llm_with_context_chain,
+                                  _retrieval_required_checker_chain,
+                                   _llm_without_context_chain )
 from src.schema.state_schema import StateSchema
+from src.retrieval.content_retriever import content_retriever
+from logger import log_node
+from langchain_core.messages import AIMessage
 
-from src.llm_chain.chains import (_clarifiaction_ques_generation_chain,
-                                  _ambiguity_checker_chain,
-                                  _query_consolidator_chain)
+# -------- NODE 2 ------------
+@log_node("node_ambiguity_check")
+def node_ambiguity_check(state:StateSchema):
 
-from langchain_core.output_parsers import JsonOutputParser
+    response = _ambiguity_checker_chain(state['conversation_history'])
 
+    return {
+        "clarification_need": response["clarification_need"],
+        "ambiguity_reason": response["ambiguity_reason"],
+        "ambiguity_score": response["ambiguity_score"],
+        "stop_reason": response["stop_reason"]
+    }
 
-# ---------------------------------------------------------
-# Utility
-# ---------------------------------------------------------
+# -------- NODE 3 ------------
+@log_node("node_clarification_ques_gen")
+def node_clarification_ques_gen(state: StateSchema):
 
-def format_conversation(history: list[dict]) -> str:
-    """
-    Converts conversation history into a readable string
-    """
-    return "\n".join(
-        f"{msg['role'].upper()}: {msg['message']}"
-        for msg in history
-    )
-
-# ---------------------------------------------------------
-# Node 1: Ambiguity Checker
-# ---------------------------------------------------------
-
-def ambiguity_checker(state: StateSchema) -> StateSchema:
-    parser = JsonOutputParser()
-
-    response = _ambiguity_checker_chain(format_conversation(state["conversation_history"]))
-
-    state["clarification_need"] = response["clarification_need"]
-    state["ambiguity_reason"] = response["ambiguity_reason"]
-    state["ambiguity_score"] = response["ambiguity_score"]
-
-    return state
-
-# ---------------------------------------------------------
-# Node 2: Clarification Question Generator
-# ---------------------------------------------------------
-
-def clarification_ques_generator(state: StateSchema) -> StateSchema:
+    response = _clarifiaction_ques_generation_chain(state['conversation_history'],
+                                         state['ambiguity_reason'],
+                                         state['clarifications_asked_count'])
     
-    ques = _clarifiaction_ques_generation_chain(format_conversation(state["conversation_history"]), 
-                                                state["ambiguity_reason"], 
-                                                state["clarifications_asked_count"])
+    print(f"{YELLOW}Legal AI : {response}{RESET}")
+ 
+    return {'conversation_history':[AIMessage(content=response)],
+            'clarifications_asked_count': state['clarifications_asked_count'] + 1}
 
-    state["conversation_history"].append({"role":"assistant","message":ques})                                       
+# -------- NODE 4 ------------
+@log_node("node_simple_llm_call")
+def node_simple_llm_call(state: StateSchema):
+    
+    response = _llm_without_context_chain(state['original_user_query'])
 
-    state["clarifications_asked_count"] += 1
+    print(f"{YELLOW}Legal AI : {response}{RESET}")
 
-    return state
+    return{
+        "conversation_history": AIMessage(content=response)
+    }
 
-# ---------------------------------------------------------
-# Node 3: Wait for User (human-in-the-loop)
-# ---------------------------------------------------------
+# -------- Node 5 ------------
+@log_node("node_retrieve_data")
+def node_retrieve_data(state: StateSchema):
 
-def wait_for_user(state: StateSchema, user_input: str) -> StateSchema:
-    state["conversation_history"].append({
-        "role": "user",
-        "message": user_input
-    })
-    return state
+    response =  content_retriever(state['consolidated_query']) #this response is a list
 
-# ---------------------------------------------------------
-# Node 4: Stop Condition Checker (NO LLM)
-# ---------------------------------------------------------
-
-def check_for_stop(state: StateSchema) -> StateSchema:
-    if state["clarification_need"] is False:
-        state["stop_reason"] = "intent_clear"
-        return state
-
-    if state["clarifications_asked_count"] >= 3:
-        state["stop_reason"] = "max_clarifications_reached"
-        return state
-
-    state["stop_reason"] = None
-    return state
+    return {
+        'retrieved_data': [response]
+        }
 
 
-# ---------------------------------------------------------
-# Node 5: Intent Consolidator
-# ---------------------------------------------------------
+# -------- NODE 6 ------------
+@log_node("node_generate_llm_response_with_retrieved_context")
+def node_generate_llm_response_with_retrieved_context(state: StateSchema):
 
-def intent_consolidator(state: StateSchema) -> StateSchema:
+    response= _llm_with_context_chain(state["conversation_history"], state['retrieved_data'])
 
-    response = _query_consolidator_chain(state["original_user_query"],
-                                         format_conversation(state["conversation_history"]))
+    print(f"{YELLOW}Legal AI : {response}{RESET}")
 
-    state["consolidated_query"] = response["consolidated_query"]
-    state["stop_reason"] = response["stop_reason"]
+    return {
+        'conversation_history':AIMessage(content=response)
+        }
 
-    return state
+# -------- NODE 7 ------------
+@log_node("node_consolidator")
+def node_consolidator(state: StateSchema):
+
+    response = _query_consolidator_chain(state['original_user_query'], state['conversation_history'])
+
+    return {
+        "consolidated_query": response
+    }
+
+# -------- NODE 8 ------------
+@log_node("node_retrieval_decider")
+def node_retrieval_decider(state: StateSchema):
+    response = _retrieval_required_checker_chain(state["conversation_history"], state['retrieved_data'])
+
+    return {
+        "retrieval_needed": response['decision'],
+        "retreival_reasoning": response['reasoning']
+    }
+
+
+# ---------- FUNCTION ------------
+@log_node("check_stop_condition")
+def check_stop_condition(state: StateSchema):
+
+    if state['clarifications_asked_count'] >=3:
+        {'clarification_need': "No",
+         'stop_reason': "max_count_reached"}
+    
+    if state['clarification_need'] == "No":
+        return True
+    
+    else: return False
+
+# ---------- FUNCTION ------------
+@log_node("retrieval_router")
+def retrieval_router(state: StateSchema):
+
+    if state['retrieval_needed'] == "RETRIEVE":
+        return "RETRIEVE"
+    else: 
+        return "DONT_RETRIEVE"
+    
+
+    

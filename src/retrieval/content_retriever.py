@@ -12,7 +12,7 @@ here i this file, the content is searched, sent to formatter and that entire flo
 from src.data_indexing.chroma_database import get_collection, search_topk
 from src.retrieval.query_processor import query_processing_pipeline
 from src.data_indexing.chroma_database import search_topk
-from src.retrieval.utils import retreived_doc_formatter
+from src.retrieval.utils import retreived_doc_formatter, _format_contexts_for_llm
 
 
 
@@ -27,7 +27,7 @@ def content_retriever(user_query, k= 5):
     doc_content = search_topk(emb, k)
     result = retreived_doc_formatter(doc_content)
 
-    return result
+    return _format_contexts_for_llm(result)
 
 
 
