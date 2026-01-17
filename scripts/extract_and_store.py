@@ -12,12 +12,12 @@ from pathlib import Path
 from src.utilities.file_handling import store_json_in_new_file
 
 #raw file that is under ingestion
-raw_file_path = "/Users/workpc/Legalai/data/raw data/Web-Based To-Do List Application – Requirements Document.pdf"
+raw_file_path = "/Users/workpc/Legalai/data/raw data/Landmark judgements of supreme court.pdf"
 
 #extract data and metadata from raw file
 extracted_data_metadata = extract_data_from_source_document(raw_file_path)
 
 #Store the extracted data and metadata in a json file inside
-store_json_in_new_file("/Users/workpc/Legalai/data/data_extracted_from_raw_file", extracted_data_metadata)
+store_json_in_new_file("/Users/workpc/Legalai/data/data_ingested_from_raw_file", extracted_data_metadata)
 
 

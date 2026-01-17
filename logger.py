@@ -53,7 +53,7 @@ from typing import Callable
 import logging
 
 def log_node(node_name: str):
-    logger = logging.getLogger(f"langgraph.node.{node_name}")
+    logger = logging.getLogger(f"langgraph.{node_name}")
 
     def decorator(fn: Callable):
         @functools.wraps(fn)

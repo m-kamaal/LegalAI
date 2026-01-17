@@ -29,12 +29,21 @@ LegalAI solves this by using Agentic RAG system that provides solution only from
 - 
 
 ## Future plans
-- Add error handling and observability
-- Create API
-- Create UI
-- Deploy on cloud
+- Add error handling and observability (logger)
+- Add web crawler and scraper (beautiful soup)
+- improve chunking strategy (document ingestion)
+- Implement postgres for storing chat state persistently.
+- Use gdrive API to store PDF and other set of documents
+- Implement streaming and complete langgraph full implementation - additional LG 
+- Create API - FastAPI
+- Create UI - Streamlit
+- model re-training (q-lora, lora)
+- Update README
+- Deploy on cloud ()
 - Add tests
 - Improve prompts
+- Evaluation (data science eval methods)
+
 
 #Save libraries used
 pipreqs . \
