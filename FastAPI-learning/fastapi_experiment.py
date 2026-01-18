@@ -1,7 +1,8 @@
 from fastapi import FastAPI, Path, Query, HTTPException
 import json
+from typing import Literal
 
-file = "/Users/workpc/Legalai/FastAPI/sample_data.json"
+file = "/Users/workpc/Legalai/FastAPI-learning/sample_data.json"
 
 def get_data():
     with open (file, "r") as f:
@@ -37,15 +38,26 @@ def get_task(task_id: str = Path(..., pattern=r"^tsk_\d{4}$")):
 
 @app.get('/filtered-task')
 def get_filtered_tasks(
-    filter:str = Query(description="this decides if you want to filter by status of the task or priority"), 
+    filter_name:Literal['status', 'priority'] = Query(description="this decides if you want to filter by status of the task or priority"), 
     filter_value : str = Query(description= "values can be high, medium, low for priority and in_progress, pending, completed for status")
     ):
+    data = get_data()
+    print(f"Filtering for {filter_name} == {filter_value}") # Debugging
+    print(f"First item in data: {data[0] if data else 'Empty'}") # Debugging
+
+    if filter_name == 'status':
+        return [item for item in data if item.get(filter_name) == filter_value]
+    if filter_name == 'priority':
+        return [item for item in data if item.get(filter_name) == filter_value]
+
+ 
+
+
+    
+
     
 
 
+    
 
 
-
-# if __name__ == "__main__":
-#     resp =  get_data()
-#     print(resp)
