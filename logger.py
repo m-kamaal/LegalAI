@@ -10,17 +10,9 @@ class ColorRuleFilter(logging.Filter):
         record.log_color = "white"
 
         # --- semantic rules (order matters) ---
-        if "ENTER" in msg:
-            record.log_color = "purple"
 
-        elif "EXIT" in msg:
-            record.log_color = "blue"
-
-        elif "Input state:" in msg:
+        if "Input state:" in msg:
             record.log_color = "green"
-
-        elif "Output:" in msg:
-            record.log_color = "cyan"
 
         elif "FINAL GRAPH STATE" in msg:
             record.log_color = "magenta"

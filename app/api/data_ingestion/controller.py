@@ -1,6 +1,6 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from app.core.config import UPLOAD_DIR
-from app.api.service.file_store import save_uploaded_file
+from app.api.data_ingestion.service.file_store import save_uploaded_file
 
 router = APIRouter(prefix="/files", tags=["File Upload"])
 

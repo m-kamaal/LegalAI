@@ -1,10 +1,8 @@
 """Need to add csv later
 this   """
 
-from pypdf import PdfReader
-from unstructured.partition.pdf import partition_pdf
-from unstructured.partition.text import partition_text
 from docling.document_converter import DocumentConverter
+from src.data_preprocessing.text_cleaning import cleaner_pipeline
 
 
 class DocumentLoader:
@@ -53,7 +51,7 @@ class DocumentLoader:
         result["doc_content"] = []
 
         for item in doc.texts:
-            text = getattr(item, "text", "").strip()
+            text = cleaner_pipeline(getattr(item, "text", "").strip())
 
             if text:
                 meta = {

@@ -1,3 +1,5 @@
+#Run using python -m app.main from root folder
+
 from logger import setup_logging
 from src.agents.clarifier_agent.agent_runner import run
 

@@ -1,13 +1,13 @@
 import os
 import chromadb
 from dotenv import load_dotenv
-from langchain.tools import tool
+
+''' This file contains all the functions needed to interact with chromadb'''
 
 #Fetch env variables
 load_dotenv()
 chroma_persistent_db_path = os.getenv("CHROMA_PERSISTENT_DB_PATH")
 collection_name = os.getenv("CHROMADB_COLLECTION_NAME")
-
 
 
 # Create persistent client (connects to existing data or creates new)
@@ -37,16 +37,18 @@ def insert_new_data(_ids, _embeddings, _documents, _metadatas):
     metadatas= _metadatas,
     )
 
-def add_or_update_data(_ids, _embeddings, _documents, _metadatas):
+def add_or_update_data(ids, embeddings, documents, metadatas):
     """This methods inserts new data into chroma DB. All arguments in List format
 Args:
     _documents : List of text chunks corresponding to the vectors
 """
+    print("adding or updating data in chroma")
+    
     _collection.upsert(
-    ids= _ids,
-    embeddings= _embeddings,
-    documents= _documents,
-    metadatas= _metadatas,
+    ids= ids,
+    embeddings= embeddings,
+    documents= documents,
+    metadatas= metadatas,
     )
     
 def search_topk(_embeddings, k: int = 5):

@@ -8,6 +8,6 @@ from src.data_indexing.chroma_database import get_client, get_collection
 
 collection = get_collection()
 
-resp = collection.get("shaina4500_3", include=["documents", "metadatas", "embeddings"])
+resp = collection.get(include=["documents", "metadatas", "embeddings"])
 
 print(resp)

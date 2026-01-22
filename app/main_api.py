@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.api.controller import router as upload_router
+from app.api.data_ingestion.controller import router as upload_router
 
 app = FastAPI(title="File Upload API")
 
