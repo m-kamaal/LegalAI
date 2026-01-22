@@ -44,6 +44,16 @@ LegalAI solves this by using Agentic RAG system that provides solution only from
 - Improve prompts
 - Evaluation (data science eval methods)
 
+## Imprevements Neede
+1- improve chunk size , not too small as docling creates.
+2- Still need to implement that to create ids, metadata only when the embedding is created. Otherwise mismatch during upserting. due to empty string embedding was not getting created and wrong api resp was getting received
+
+## Imprevements made
+1- cleaning the data before even adding into json data from docling, earlier use to clean after creating the json out of docling doc.
+2- Added logging mechanism for data pre-processes
+3- dataset builder can accept both file and a disct obj of content of document
+4- API created to upload document on local via uvicorn api
+
 
 #Save libraries used
 pipreqs . \
