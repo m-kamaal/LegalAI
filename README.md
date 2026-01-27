@@ -1,62 +1,65 @@
-LegalAI - Legal AI Assistant
+# LegalAI - Legal AI Research Assistant (v0.1)
 
-This application helps advocates to perform various activities of their day to day tasks at a lightening fast speed.
+## About:
+
+Usually legal professionals are not highly technically equipped to right and verify detailed prompts and its response. LegalAI solves this by using Agentic RAG system that provides solution only from a real source along with citations.
+
+Also, it helps them to perform various activities of their day to day tasks at a lightening fast speed with reduced hallucinations and more confidence.
 For example, legal research, creation of legal documents, etc
 
-## What this project is
-LegalAI solves the issue of hallucination in the AI usage that usually is done by legal professionals. Where they are not highly technically equipped to right and verify detailed prompts and its response.
-LegalAI solves this by using Agentic RAG system that provides solution only from a real source.
 
-## Current status
-- Initial version (v0.1)
-- Work in progress
-- APIs and UI not developed yet
+Following features are in the roadmap of this project:
+
+  1. Web crawler or a data scrappper to gather realtime updates from Indian legal websites.
+  2. User Interface like a chat system
+  3. Evaluation metrics
+  4. Deployment on cloud
+  5. Improvements:
+    - Multi-chat threads
+    - Memory enhancements and streaming capabilities
+
+## Key Characteristics:
+
+- Built an LLM-driven agentic RAG system to answer advocate queries from legal documents using grounded, citation-backed responses.
+- Designed an end-to-end document ingestion pipeline, including document parsing, text chunking, and noise filtering for cleaner embeddings.
+- Generated semantic embeddings and indexed them in ChromaDB to enable precise similarity search and contextual retrieval.
+- Implemented agent-oriented query handling, separating clarification, retrieval, and response generation responsibilities.
+- Developed FastAPI-based APIs for document upload, data ingestion, and chat-style query interactions on CLI.
+- Added step-level logging and traceability to observe agent behavior, intermediate states, and retrieval outputs for debugging and iteration.
+- Structured the system for future extensibility, supporting new agents, evolving prompts, and additional data sources.
 
 ## Tech stack
 - Python
 - LangGraph
 - Langchain
-- Euri 
+- OpenAI
 - Chroma DB
+- Docling
 
-## How to run (basic)
+## How to run
 1. Clone the repo
 2. create an .env file with API key for the LLM
 3. Install dependencies
-4. Run main entry file
+4. Run main entry file from root with this command: python -m app.main
 
 ## Folder structure (high level)
-- 
-
-## Future plans
-- Add error handling and observability (logger)
-- Add web crawler and scraper (beautiful soup)
-- improve chunking strategy (document ingestion)
-- Implement postgres for storing chat state persistently.
-- Use gdrive API to store PDF and other set of documents
-- Implement streaming and complete langgraph full implementation - additional LG 
-- Create API - FastAPI
-- Create UI - Streamlit
-- model re-training (q-lora, lora)
-- Update README
-- Deploy on cloud ()
-- Add tests
-- Improve prompts
-- Evaluation (data science eval methods)
-
-## Imprevements Neede
-1- improve chunk size , not too small as docling creates.
-2- Still need to implement that to create ids, metadata only when the embedding is created. Otherwise mismatch during upserting. due to empty string embedding was not getting created and wrong api resp was getting received
-
-## Imprevements made
-1- cleaning the data before even adding into json data from docling, earlier use to clean after creating the json out of docling doc.
-2- Added logging mechanism for data pre-processes
-3- dataset builder can accept both file and a disct obj of content of document
-4- API created to upload document on local via uvicorn api
-
-
-#Save libraries used
-pipreqs . \
-  --force \
-  --ignore venv311 \
-  --savepath requirements-min.txt
+  .
+  ├── app
+  │   └── main.py
+  ├── chromadb_persis
+  ├── logger.py
+  ├── project_data
+  ├── README.md
+  ├── requirements-min.txt
+  ├── requirements.txt
+  ├── scripts
+  ├── src
+  │   ├── agents
+  │   ├── data_indexing
+  │   ├── data_preprocessing
+  │   ├── embeddings
+  │   ├── llm_chain
+  │   ├── prompt_templates
+  │   ├── retrieval
+  │   ├── schema
+  │   └── utilities
