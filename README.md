@@ -20,12 +20,11 @@ Following features are in the roadmap of this project:
 
 ## Key Characteristics:
 
-- Built an LLM-driven agentic RAG system to answer advocate queries from legal documents using grounded, citation-backed responses.
-- Designed an end-to-end document ingestion pipeline, including document parsing, text chunking, and noise filtering for cleaner embeddings.
-- Generated semantic embeddings and indexed them in ChromaDB to enable precise similarity search and contextual retrieval.
-- Implemented agent-oriented query handling, separating clarification, retrieval, and response generation responsibilities.
-- Developed FastAPI-based APIs for document upload, data ingestion, and chat-style query interactions on CLI.
-- Added step-level logging and traceability to observe agent behavior, intermediate states, and retrieval outputs for debugging and iteration.
+- End-to-end document ingestion pipeline, including document parsing, text chunking (via Docling), and noise filtering for cleaner embeddings.
+- Generated semantic embeddings and indexed in ChromaDB to enable precise similarity search and contextual retrieval.
+- Agent-oriented query handling, separating clarification, retrieval, and response generation responsibilities.
+- FastAPI-based APIs for document upload, data ingestion, and chat-style query interactions on CLI.
+- Step-level logging and traceability to observe agent behavior, intermediate states, and retrieval outputs for debugging and iteration.
 - Structured the system for future extensibility, supporting new agents, evolving prompts, and additional data sources.
 
 ## Tech stack
