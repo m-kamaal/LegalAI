@@ -42,15 +42,12 @@ Following features are in the roadmap of this project:
 4. Run main entry file from root with this command: python -m app.main
 
 ## Folder structure (high level)
+  '''
   .
   ├── app
   │   └── main.py
   ├── chromadb_persis
-  ├── logger.py
   ├── project_data
-  ├── README.md
-  ├── requirements-min.txt
-  ├── requirements.txt
   ├── scripts
   ├── src
   │   ├── agents
@@ -62,3 +59,4 @@ Following features are in the roadmap of this project:
   │   ├── retrieval
   │   ├── schema
   │   └── utilities
+  '''
