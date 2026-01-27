@@ -27,6 +27,11 @@ Following features are in the roadmap of this project:
 - Step-level logging and traceability to observe agent behavior, intermediate states, and retrieval outputs for debugging and iteration.
 - Structured the system for future extensibility, supporting new agents, evolving prompts, and additional data sources.
 
+## Architecture
+
+<img src="LegalAI.drawio.html" alt="Project Architecture" width="500">
+
+
 ## Tech stack
 - Python
 - LangGraph
