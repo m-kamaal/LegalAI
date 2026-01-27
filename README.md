@@ -29,7 +29,7 @@ Following features are in the roadmap of this project:
 
 ## Architecture
 
-<img src="LegalAI.drawio.html" alt="Project Architecture" width="500">
+<img src="LegalAI.Architecture.svg" alt="Project Architecture" width="500">
 
 
 ## Tech stack
