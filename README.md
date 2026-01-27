@@ -29,7 +29,7 @@ Following features are in the roadmap of this project:
 
 ## Architecture
 
-<img src="LegalAI.Architecture.svg" alt="Project Architecture" width="500">
+<img src="LegalAI.Architecture.svg" alt="Project Architecture" width="800">
 
 
 ## Tech stack
@@ -51,7 +51,7 @@ Following features are in the roadmap of this project:
   .
   ├── app
   │   └── main.py
-  ├── chromadb_persis
+  ├── chromadb_persis\n
   ├── project_data
   ├── scripts
   ├── src
