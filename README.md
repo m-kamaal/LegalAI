@@ -47,7 +47,7 @@ Following features are in the roadmap of this project:
 4. Run main entry file from root with this command: python -m app.main
 
 ## Folder structure (high level)
-  '''
+  ```
   .
   ├── app
   │   └── main.py
@@ -64,4 +64,4 @@ Following features are in the roadmap of this project:
   │   ├── retrieval
   │   ├── schema
   │   └── utilities
-  '''
+  ```
